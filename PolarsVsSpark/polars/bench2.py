@@ -7,22 +7,8 @@ def read_csvs(path: str):
     return lazy_df
 
 
-def calculate_metrics(df):
-    metrics = \
-        df.group_by(
-            pl.col('date').cast(pl.Date), 
-            pl.col('date').cast(pl.Date).dt.year().alias('year'),
-            pl.col('date').cast(pl.Date).dt.month().alias('month'),
-            pl.col('date').cast(pl.Date).dt.day().alias('day'),
-            pl.col('model')
-            ).agg(pl.sum("failure").alias("failures")
-        )
-    return metrics
-
-
 def write_parquets(df, path: str) -> None:
     df.sink_parquet(path, compression='snappy')
-
 
 def main():
     t1 = datetime.now()

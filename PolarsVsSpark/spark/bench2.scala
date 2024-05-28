@@ -11,15 +11,6 @@ object bench2 {
   def write_parquets(df: DataFrame, path: String): Unit =
     df.write.format("parquet").mode("overwrite").save(path)
 
-  def calculate_metrics(df: DataFrame): DataFrame =
-    df.groupBy(
-      col("date"),
-      year(col("date")).alias("year"),
-      month(col("date")).alias("month"),
-      dayofmonth(col("date")).alias("day"),
-      col("model")
-    ).agg(sum("failure").alias("failures"))
-
   def main(args: Array[String]): Unit = {
     val t1 = System.nanoTime()
 
