@@ -13,7 +13,7 @@ object bench3 {
     val spark = SparkSession.builder.getOrCreate()
 
     val raw_data = read_parquet(spark, read_path)
-    val records_count = raw_data.filter("1 == 1").count()
+    val records_count = raw_data.filter("model = 'value'").count()
     val t2 = System.nanoTime()
     println(
       "Time to run Apache Spark Load parquet : " + (t2 - t1) / 1e9 + "s"
