@@ -28,12 +28,10 @@ def main():
     t1 = datetime.now()
 
     read_path = 'root/input/*.csv'
-    metrics_write_path = 'root/parquets/parquets_metrics2'
+    write_path = 'root/parquets/parquets2'
 
     df = read_csvs(read_path)
-    df = df.select('date', 'model', 'failure')
-    metrics = calculate_metrics(df)
-    write_parquets(metrics, metrics_write_path)
+    write_parquets(df, write_path)
 
     t2 = datetime.now()
     print(f"Time to run polars pipeline : {t2 - t1}")
