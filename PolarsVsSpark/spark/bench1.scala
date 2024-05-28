@@ -3,28 +3,19 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object bench1 {
   def read_csvs(spark: SparkSession, path: String): DataFrame =
-    spark.read
-      .option("recursiveFileLookup", "true")
-      .option("header", "true")
-      .csv(path)
+    spark.read.option("recursiveFileLookup", "true").option("header", "true").csv(path)
 
   def write_parquets(df: DataFrame, path: String): Unit =
-    df.write
-      .partitionBy("date")
-      .format("parquet")
-      .mode("overwrite")
-      .save(path)
+    df.write.partitionBy("date").format("parquet").mode("overwrite").save(path)
 
   def calculate_metrics(df: DataFrame): DataFrame =
-    df
-      .groupBy(
+    df.groupBy(
         col("date"),
         year(col("date")).alias("year"),
         month(col("date")).alias("month"),
         dayofmonth(col("date")).alias("day"),
         col("model")
-      )
-      .agg(sum("failure").alias("failures"))
+      ).agg(sum("failure").alias("failures"))
 
   def main(args: Array[String]): Unit = {
     val t1 = System.nanoTime()
